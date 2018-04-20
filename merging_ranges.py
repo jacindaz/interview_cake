@@ -43,11 +43,8 @@ def merge_ranges(availability_list):
         previous_start = previous[0]
         previous_end = previous[1]
 
-        if current_start <= previous_end <= current_end:
-            merged_tuples = (previous_start, current_end)
-            merged_ranges[-1] = merged_tuples
-        elif previous_start <= current_start <= previous_end:
-            merged_tuples = (previous_start, previous_end)
+        if current_start <= previous_end:
+            merged_tuples = (previous_start, max(current_end, previous_end))
             merged_ranges[-1] = merged_tuples
         else:
             merged_ranges.append((current_start, current_end))
@@ -59,5 +56,5 @@ a = [(0,1),(3,5),(4,8),(10,12),(9,10)] # [(0,1),(3,8),(9,12)]
 b = [(0,1),(3,5),(14,16),(4,8),(10,12),(9,10)] # [(0,1),(3,8),(9,12),(14,16)]
 c = [(1,5),(2,3),(3,6)] # [(1,6)]
 d = [(1,10),(2,6),(3,5),(7,9)] # [(1,10)]
-e = [(1,10),(2,6),(3,5),(7,9),(21,25)] # [(1,10)]
-print(merge_ranges(a))
+e = [(1,10),(2,6),(3,5),(7,9),(21,25)] # [(1,10),(21,25)]
+print(merge_ranges(e))
