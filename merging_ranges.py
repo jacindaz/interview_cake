@@ -1,5 +1,5 @@
 # import ipdb
-def merge_ranges(availability_list):
+def merge_ranges_print_statements(availability_list):
     availability_list = sorted(availability_list, key=lambda x: x[0])
     merged_ranges = [availability_list[0]]
 
@@ -34,9 +34,30 @@ def merge_ranges(availability_list):
 
     return merged_ranges
 
+def merge_ranges(availability_list):
+    availability_list = sorted(availability_list, key=lambda x: x[0])
+    merged_ranges = [availability_list[0]]
+
+    for current_start, current_end in availability_list[1:]:
+        previous = merged_ranges[-1]
+        previous_start = previous[0]
+        previous_end = previous[1]
+
+        if current_start <= previous_end <= current_end:
+            merged_tuples = (previous_start, current_end)
+            merged_ranges[-1] = merged_tuples
+        elif previous_start <= current_start <= previous_end:
+            merged_tuples = (previous_start, previous_end)
+            merged_ranges[-1] = merged_tuples
+        else:
+            merged_ranges.append((current_start, current_end))
+
+    return merged_ranges
 
 
 a = [(0,1),(3,5),(4,8),(10,12),(9,10)] # [(0,1),(3,8),(9,12)]
 b = [(0,1),(3,5),(14,16),(4,8),(10,12),(9,10)] # [(0,1),(3,8),(9,12),(14,16)]
 c = [(1,5),(2,3),(3,6)] # [(1,6)]
-print(merge_ranges(b))
+d = [(1,10),(2,6),(3,5),(7,9)] # [(1,10)]
+e = [(1,10),(2,6),(3,5),(7,9),(21,25)] # [(1,10)]
+print(merge_ranges(a))
